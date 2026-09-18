@@ -1,11 +1,9 @@
-# ticketmaster-auto-purchaser-bot
+## Appilot's ticketmaster auto purchaser bot
 
-The **ticketmaster-auto-purchaser-bot** is a high-speed ticket-buying automation system built for professional resellers who need reliable, private, and non-public tooling. It streamlines queue entry, cart handling, seat selection, and checkout to outperform overloaded public bots. This project focuses on performance, stability, and stealth, ensuring consistent results even during major K-pop concert rushes.
+> Appilot's ticketmaster auto purchaser bot is a repository for managing a configured event workflow through browser automation components. The project focuses on preparing event searches, handling browser sessions, applying selection rules, and recording run results. The system is structured around repeatable actions rather than manual clicking through every stage of an event page.
 
+The repository separates configuration, automation logic, session handling, and output records so each part can be reviewed independently. A demonstration walkthrough is available in the project notes through this Loom recording: https://www.loom.com/share/7174cc2ad66146d291785cf4866e1c6f
 
-<p align="center">
-  <a href="https://Appilot.app" target="_blank"><img src="https://github.com/Instagram-Automations/Footer-test/blob/main/appilot-baner.png" alt="Appilot Banner" width="100%"></a>
-</p>
 <p align="center">
   <a href="https://t.me/devpilot1" target="_blank"><img src="https://img.shields.io/badge/Chat%20on-Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white" alt="Telegram"></a>
   <a href="mailto:support@appilot.app" target="_blank"><img src="https://img.shields.io/badge/Email-support@appilot.app-EA4335?style=for-the-badge&logo=gmail&logoColor=white" alt="Gmail"></a>
@@ -14,139 +12,98 @@ The **ticketmaster-auto-purchaser-bot** is a high-speed ticket-buying automation
 </p>
 
 
+**How the event workflow is organized**
 
-## Introduction
+The system begins with defined event parameters, account settings, and selection preferences. Those values move through validation before the browser layer starts. This prevents missing configuration from reaching the automation stage and gives operators a clear record of what was requested during each run.
 
-This automation system handles the entire ticket-buying workflow automatically.  
-It replaces repetitive manual steps like queue waiting, captcha solving, seat selection, and checkout submission.  
-Users benefit from faster reactions, reduced failures, and higher ticket acquisition success during high-demand drops.
+The event lookup layer can connect with documented event data sources such as the [Ticketmaster API documentation](https://developer.ticketmaster.com/products-and-docs/). The API documentation describes event discovery endpoints used for finding event, attraction, and venue information. Browser actions are kept separate from data retrieval so changes in one area do not require rebuilding the entire project.
 
-### Why Private Ticket Sniping Automation Matters
-- Public ticket bots slow down under load and trigger detection more easily  
-- Private, isolated worker logic improves queue priority and checkout consistency  
-- Proxy rotation and fingerprinting drastically reduce block rates  
-- Multi-account orchestration boosts ticket acquisition volume  
-- Performance-focused flows deliver better results in competitive K-pop sales  
----
+Feature Description
+Event configuration loading Removes repeated manual entry by loading event URLs, preferences, and run settings from project configuration files.
+Browser session control Handles browser startup, saved session data, and controlled page actions through a dedicated automation layer.
+Selection rule handling Reduces inconsistent choices by applying configured ticket preferences and storing the selected results.
+Run logging Keeps execution records, errors, and status messages so technical reviewers can inspect each workflow stage.
+Output reporting Creates structured files containing run details instead of leaving results only inside a browser window.
 
-## Core Features
-| Feature | Description |
-|----------|-------------|
-| High-Speed Queue Entry | Enters queue instantly with prepared sessions for faster prioritization |
-| Multi-Account Orchestration | Runs multiple accounts in parallel with isolated fingerprints |
-| Smart Seat Selection | Auto-selects preferred sections, prices, or best-available logic |
-| Checkout Automation | Autofills buyer details and executes instant purchase flows |
-| Proxy Rotation System | Assigns fresh IP per account for stable, undetected sessions |
-| Captcha Solver Integration | Supports major API-based solvers for reliability |
-| Anti-Fingerprinting Layer | Uses human-like headers, TLS, and browser profile separation |
-| Real-Time Monitoring | Provides logs, status updates, and purchase confirmations |
-| Retry & Recovery Engine | Automatically retries failed tasks and handles queue timeouts |
-| Configurable Profiles | Users define regions, events, price ranges, and seat logic |
----
+**Browser automation design**
 
-## How It Works
-1. Loads account profiles, proxies, and purchase configs  
-2. Initializes isolated browser instances with fingerprinting  
-3. Enters queue, monitors progress, and selects seats automatically  
-4. Executes optimized checkout flow  
-5. Logs results, saves receipts, and triggers optional resale hooks  
+The browser layer uses [Playwright automation](https://playwright.dev/docs/intro) patterns to control pages, locate elements, and manage browser contexts. Playwright provides browser APIs for Chromium, Firefox, and WebKit workflows, making it suitable for controlled testing and automation environments.
 
-**Input or Trigger**  
-Config file with event URL, accounts, proxies, and seat preferences.
+The main engineering concern is keeping each workflow stage observable. A failed selector, missing page element, or incomplete configuration should produce a readable log entry instead of an unexplained stop. The project records these states so maintenance work can focus on the exact failing component.
 
-**Core Logic**  
-Queue handling, captcha solving, seat targeting, checkout automation, and session stabilization.
+The browser workflow follows a defined sequence: open the configured event page, verify expected page elements, apply stored preferences, collect the result state, and write the outcome. The separation between browser actions and configuration makes it possible to review changes without editing every automation file.
 
-**Output or Action**  
-Successful ticket purchase, logs, receipt data, and real-time status reporting.
+**Project structure and responsibilities**
 
-**Other Functionalities**  
-Multi-session orchestration, anti-ban behavior, auto-refresh, and backup flows.
+```
+      src/
+        main.py
+        automation/
+          browser_runner.py
+          event_flow.py
+          selection.py
+        utils/
+          config_loader.py
+          logger.py
+      config/
+        settings.yaml
+        events.yaml
+      logs/
+        activity.log
+      output/
+        run-report.json
+      requirements.txt
+      README.md
+```
 
-**Safety Controls**  
-Rate limits, cooldowns, fingerprint checks, purchase caps, and session isolation.  
----
+**Configuration and execution flow**
 
-## Tech Stack
-**Language:**  
-Python
+The project keeps runtime values outside the main automation code. Event details, browser preferences, and selection rules are loaded before execution begins. A typical configuration defines the target event, preferred ticket properties, and output locations.
 
-**Frameworks:**  
-Playwright, FastAPI (optional API layer)
+```
+    python main.py --config config/settings.yaml
+    python main.py --event-config config/events.yaml
+    python main.py --report output/run-report.json
+```
 
-**Tools:**  
-Captcha APIs, Proxy managers, Session storage, Queue handlers
+A run produces structured information that can be reviewed after completion. Logs show the sequence of actions, while report files provide a machine-readable record for later analysis. This approach keeps debugging information available without requiring someone to watch every browser action.
 
-**Infrastructure:**  
-Local runners, containerized workers, remote headless servers  
----
+Use Cases
 
-## Directory Structure
-    ticketmaster-auto-purchaser-bot/
-    ├── src/
-    │   ├── main.py
-    │   ├── automation/
-    │   │   ├── tasks.py
-    │   │   ├── scheduler.py
-    │   │   └── utils/
-    │   │       ├── logger.py
-    │   │       ├── proxy_manager.py
-    │   │       └── config_loader.py
-    ├── config/
-    │   ├── settings.yaml
-    │   ├── credentials.env
-    ├── logs/
-    │   └── activity.log
-    ├── output/
-    │   ├── results.json
-    │   └── report.csv
-    ├── requirements.txt
-    └── README.md
+Event operations teams use the workflow to keep event preferences, browser actions, and execution records in one repository.
+Automation engineers use the modular structure to review browser behavior, update selectors, and maintain separate configuration files.
+Developers building ticket purchasing automation can use the project layout as a reference for separating inputs, actions, and outputs.
 
----
+Connected tools and technical references
 
-## Use Cases
-Concert resellers use it to secure high-demand tickets instantly, so they can increase profitable inventory.  
-Teams use it to coordinate multiple buyers without depending on public bots, so they can outperform competitors.  
-Automation agencies use it to manage large-scale ticket drops, so they can guarantee reliability for clients.  
-Online sellers use it to snipe rare event releases, so they can meet market demand quickly.  
-Collectors use it to bypass manual queue stress, so they can secure premium seats without hassle.  
----
+The project uses common automation components with documented interfaces. [Playwright's browser API reference](https://playwright.dev/docs/api/class-page) explains page control methods used by browser workflows. [Selenium WebDriver documentation](https://www.selenium.dev/documentation/webdriver/) provides additional background on browser control concepts.
 
-## FAQs
+For event information workflows, the [Ticketmaster Discovery API guide](https://developer.ticketmaster.com/products-and-docs/apis/discovery-api/v2/) documents event discovery requests and response structures. These references help maintain clear boundaries between event data handling and browser execution.
 
-**How do I configure this automation for multiple accounts?**  
-Define each account in the config file with separate sessions, proxies, and device fingerprints for full isolation.
+How to Run Using Appilot's ticketmaster auto purchaser bot
 
-**Does it support proxy rotation or anti-detection?**  
-Yes — rotating proxies, session isolation, human headers, and randomized timing reduce detection and improve consistency.
+**STEP 1 — Download & Set Up the Project** Get the repository files, install dependencies, and prepare the environment before running the automation workflow. <br>
+**STEP 2 — Load Configuration** Open the project and provide event settings, browser options, and selection preferences through the configuration files. <br>
+**STEP 3 — Start The Workflow** Run the command entry point and allow the browser manager to process the configured event flow.<br>
+**STEP 4 — Review Results** Check generated logs and reports to inspect completed actions, errors, and recorded workflow states. <br>
 
-**Can I schedule it to run periodically?**  
-Yes — tasks can be scheduled using the internal scheduler for event-time triggers and retries.
+**Repository maintenance notes**
 
-**What about emulator vs real device parity?**  
-Browser automation is optimized for speed; physical devices are only needed for mobile-only ticketing flows.  
----
+Browser-based systems require regular review because page structures, authentication flows, and external interfaces change over time. The repository keeps selectors, configuration, and execution logic separated so updates can be made in the correct area.
 
-### Performance & Reliability Benchmarks
-**Execution Speed:** Typically 40–60 actions per minute depending on queue and ticket platform stability.  
+The project also includes logging points around important transitions. When a workflow stops, maintainers can identify whether the issue came from configuration, browser navigation, element handling, or output generation.
 
-**Success Rate:** ~93–94% across long-running purchase attempts with retries enabled.  
+**FAQs**
 
-**Scalability:** Supports 50–300 simultaneous sessions using distributed workers and proxy sharding.  
+**How does the automation handle event selection and ticket preferences?** 
 
-**Resource Efficiency:** 300–500MB RAM per worker, lightweight CPU usage under headless mode.  
+>The workflow reads configured event details and selection preferences before browser actions begin. Those values guide the selection layer and are recorded with the final run output so the process can be reviewed.
 
-**Error Handling:** Automatic retries, exponential backoff, structured logging, and full recovery sequences.
+**Can the project work with the Ticketmaster API?**
 
----
+>The project structure supports connecting event data sources through separate modules. The Ticketmaster API documentation provides official information about available discovery endpoints and data formats that can be used when an approved API workflow is required.
 
+**What technology is used for the browser workflow?**
 
-<p align="center">
-<a href="https://cal.com/app-pilot-m8i8oo/30min" target="_blank">
- <img src="https://img.shields.io/badge/Book%20a%20Call%20with%20Us-34A853?style=for-the-badge&logo=googlecalendar&logoColor=white" alt="Book a Call">
-</a>
- <a href="https://www.youtube.com/@Appilot-app/videos" target="_blank">
-  <img src="https://img.shields.io/badge/🎥%20Watch%20demos%20-FF0000?style=for-the-badge&logo=youtube&logoColor=white" alt="Watch on YouTube">
- </a>
-</p>
+>The browser layer uses Playwright-based automation patterns with separated configuration and logging components. This keeps browser actions, settings, and output records easier to inspect during
+
