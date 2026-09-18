@@ -1,8 +1,13 @@
+<img src="TM-banner .jpg" alt="Appilot Banner" width="100%"> 
+
+
 ## Appilot's ticketmaster auto purchaser bot
 
 > Appilot's ticketmaster auto purchaser bot is a repository for managing a configured event workflow through browser automation components. The project focuses on preparing event searches, handling browser sessions, applying selection rules, and recording run results. The system is structured around repeatable actions rather than manual clicking through every stage of an event page.
 
 The repository separates configuration, automation logic, session handling, and output records so each part can be reviewed independently. A demonstration walkthrough is available in the project notes through this Loom recording: https://www.loom.com/share/7174cc2ad66146d291785cf4866e1c6f
+
+<img src="Appilot-banner.jpg" alt="Appilot Banner" width="100%"> 
 
 <p align="center">
   <a href="https://t.me/devpilot1" target="_blank"><img src="https://img.shields.io/badge/Chat%20on-Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white" alt="Telegram"></a>
@@ -10,6 +15,7 @@ The repository separates configuration, automation logic, session handling, and 
   <a href="https://Appilot.app" target="_blank"><img src="https://img.shields.io/badge/Visit-Website-007BFF?style=for-the-badge&logo=google-chrome&logoColor=white" alt="Website"></a>
   <a href="https://discord.gg/wpfG4j84" target="_blank"><img src="https://img.shields.io/badge/Join-Appilot_Community-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Appilot Discord"></a>
 </p>
+
 
 
 **How the event workflow is organized**
@@ -24,6 +30,8 @@ Browser session control Handles browser startup, saved session data, and control
 Selection rule handling Reduces inconsistent choices by applying configured ticket preferences and storing the selected results.
 Run logging Keeps execution records, errors, and status messages so technical reviewers can inspect each workflow stage.
 Output reporting Creates structured files containing run details instead of leaving results only inside a browser window.
+
+<img src="arc.jpg" alt="Appilot Banner" width="100%"> 
 
 **Browser automation design**
 
@@ -56,6 +64,9 @@ The browser workflow follows a defined sequence: open the configured event page,
       README.md
 ```
 
+
+
+
 **Configuration and execution flow**
 
 The project keeps runtime values outside the main automation code. Event details, browser preferences, and selection rules are loaded before execution begins. A typical configuration defines the target event, preferred ticket properties, and output locations.
@@ -68,32 +79,35 @@ The project keeps runtime values outside the main automation code. Event details
 
 A run produces structured information that can be reviewed after completion. Logs show the sequence of actions, while report files provide a machine-readable record for later analysis. This approach keeps debugging information available without requiring someone to watch every browser action.
 
-Use Cases
+**Use Cases**
 
 Event operations teams use the workflow to keep event preferences, browser actions, and execution records in one repository.
 Automation engineers use the modular structure to review browser behavior, update selectors, and maintain separate configuration files.
 Developers building ticket purchasing automation can use the project layout as a reference for separating inputs, actions, and outputs.
 
-Connected tools and technical references
+**Connected tools and technical references**
 
 The project uses common automation components with documented interfaces. [Playwright's browser API reference](https://playwright.dev/docs/api/class-page) explains page control methods used by browser workflows. [Selenium WebDriver documentation](https://www.selenium.dev/documentation/webdriver/) provides additional background on browser control concepts.
 
 For event information workflows, the [Ticketmaster Discovery API guide](https://developer.ticketmaster.com/products-and-docs/apis/discovery-api/v2/) documents event discovery requests and response structures. These references help maintain clear boundaries between event data handling and browser execution.
 
-How to Run Using Appilot's ticketmaster auto purchaser bot
+## How to Run Using Appilot's ticketmaster auto purchaser bot
 
 **STEP 1 — Download & Set Up the Project** Get the repository files, install dependencies, and prepare the environment before running the automation workflow. <br>
 **STEP 2 — Load Configuration** Open the project and provide event settings, browser options, and selection preferences through the configuration files. <br>
 **STEP 3 — Start The Workflow** Run the command entry point and allow the browser manager to process the configured event flow.<br>
 **STEP 4 — Review Results** Check generated logs and reports to inspect completed actions, errors, and recorded workflow states. <br>
 
-**Repository maintenance notes**
+## Repository maintenance notes
 
 Browser-based systems require regular review because page structures, authentication flows, and external interfaces change over time. The repository keeps selectors, configuration, and execution logic separated so updates can be made in the correct area.
 
 The project also includes logging points around important transitions. When a workflow stops, maintainers can identify whether the issue came from configuration, browser navigation, element handling, or output generation.
 
-**FAQs**
+
+<img src="footer.gif" alt="Appilot Banner" width="100%"> 
+
+## FAQs
 
 **How does the automation handle event selection and ticket preferences?** 
 
